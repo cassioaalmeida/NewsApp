@@ -66,7 +66,6 @@
                 android:id="@+id/txtAuthor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/txtDate"
                 android:text="By Bram de Haas"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -75,7 +74,7 @@
                 android:id="@+id/txtDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/txtAuthor"
                 android:text="Last Updated: 2021-03-12 11:38:12"
                 android:textSize="12sp"
                 android:textStyle="bold" />
