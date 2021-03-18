@@ -3,7 +3,6 @@ package com.example.newsapp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +11,9 @@ import com.example.newsapp.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val NEWS_KEY = "NEWS_KEY"
+    }
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var news: News
@@ -22,11 +24,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState?.getParcelable<News>("News") != null) {
-            news = savedInstanceState.getParcelable<News>("News") as News
+        if (savedInstanceState?.getParcelable<News>(NEWS_KEY) != null) {
+            news = savedInstanceState.getParcelable<News>(NEWS_KEY) as News
         } else {
-            Log.i("LifeCycleTest", "News object created")
-
             news = News(
                     "GS Acquisition Holdings Corp II: Rumors Create An Opportunity",
                     "There are rumors swirling around involving BlockFi and Flipkart. The excitement does create opportunity to position in GSAH that was valued at 15 pre-deal just weeks ago.",
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable("News", news)
+        outState.putParcelable(NEWS_KEY, news)
     }
 
 }
