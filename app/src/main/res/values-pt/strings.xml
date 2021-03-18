@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">App de noticias</string>
-    <string name="view_more">Veja mais</string>
-    <string name="news_image">Imagem da notícia</string>
+    <string name="app_name">News App</string>
+    <string name="view_more">View More</string>
+    <string name="news_image">News Image</string>
+    <string name="news_source">By %s in %s</string>
+    <string name="news_last_update">Last Updated: %s</string>
 </resources>
