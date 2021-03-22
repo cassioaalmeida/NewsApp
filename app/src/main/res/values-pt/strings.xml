@@ -4,4 +4,7 @@
     <string name="news_image">News Image</string>
     <string name="news_source">By %s in %s</string>
     <string name="news_last_update">Last Updated: %s</string>
+    <string name="no_name">Internal Server Error</string>
+    <string name="browser_needed">Need a browser to open this news</string>
+    <string name="share">Share</string>
 </resources>
