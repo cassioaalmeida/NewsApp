@@ -3,6 +3,7 @@ package com.example.newsapp
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.databinding.ActivityNewsListBinding
 
 class NewsListActivity : AppCompatActivity() {
@@ -12,38 +13,64 @@ class NewsListActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityNewsListBinding
-    private lateinit var news: News
+    lateinit var newsList: ArrayList<News>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (savedInstanceState?.getParcelable<News>(NEWS_KEY) != null) {
-            news = savedInstanceState.getParcelable<News>(NEWS_KEY) as News
-        } else {
-            news = News(
-                    "GS Acquisition Holdings Corp II: Rumors Create An Opportunity",
-                    "There are rumors swirling around involving BlockFi and Flipkart. The excitement does create opportunity to position in GSAH that was valued at 15 pre-deal just weeks ago.",
-                    "https://cdn.vox-cdn.com/thumbor/7YChMVyltceCz6Kv5UXXSoTpXBY=/0x146:2040x1214/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/15971132/elon_musk_tesla_3225.jpg",
-                    "Yesterday there was a lot of price action in Goldman Sachs Acquisition Company II (NYSE:GSAH). This is a SPAC with a sponsor controlled by an affiliate of Goldman Sachs (NYSE:GS) through its Permanen…",
-                    "Bram de Haas",
-                    "Seeking Alpha",
-                    "2021-03-12 11:38:12",
-                    "https://seekingalpha.com/article/4413421-gsah-rumors-create-opportunity"
-            )
-        }
-
         binding = ActivityNewsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnNavigationTest.setOnClickListener {
+        newsList = savedInstanceState?.getParcelableArrayList<News>(NEWS_KEY)
+            ?: arrayListOf(
+                News(
+                    "Elon Musk tweets about ‘new drug called Regretamine’, triggering wave of memes and Dogecoin references",
+                    "‘New drug coming out called Regretamine. Pop one & all regrets are gone’",
+                    "https://static.independent.co.uk/2021/03/03/10/2021-02-15T135548Z_2064936280_RC21TL9X2BL9_RTRMADP_3_RUSSIA-PUTIN-CLUBHOUSE.JPG?width=1200&auto=webp&quality=75",
+                    "Tesla and SpaceX chief Elon Musk on Tuesday posted about a new drug called Regretamine, baffling some users and triggering a wave of memes and references to his power as a market tipster.\r\nNew drug c… [+2380 chars]",
+                    "Namita Singh",
+                    "Independent",
+                    "2021-03-03T12:24:07Z",
+                    "https://www.independent.co.uk/news/world/americas/elon-musk-regretamine-twitter-b1811623.html"
+                ),
+                News(
+                    "Elon Musk tweets about ‘new drug called Regretamine’, triggering wave of memes and Dogecoin references",
+                    "‘New drug coming out called Regretamine. Pop one & all regrets are gone’",
+                    "https://static.independent.co.uk/2021/03/03/10/2021-02-15T135548Z_2064936280_RC21TL9X2BL9_RTRMADP_3_RUSSIA-PUTIN-CLUBHOUSE.JPG?width=1200&auto=webp&quality=75",
+                    "Tesla and SpaceX chief Elon Musk on Tuesday posted about a new drug called Regretamine, baffling some users and triggering a wave of memes and references to his power as a market tipster.\r\nNew drug c… [+2380 chars]",
+                    "Namita Singh",
+                    "Independent",
+                    "2021-03-03T12:24:07Z",
+                    "https://www.independent.co.uk/news/world/americas/elon-musk-regretamine-twitter-b1811623.html"
+                ),
+                News(
+                    "Elon Musk tweets about ‘new drug called Regretamine’, triggering wave of memes and Dogecoin references",
+                    "‘New drug coming out called Regretamine. Pop one & all regrets are gone’",
+                    "https://static.independent.co.uk/2021/03/03/10/2021-02-15T135548Z_2064936280_RC21TL9X2BL9_RTRMADP_3_RUSSIA-PUTIN-CLUBHOUSE.JPG?width=1200&auto=webp&quality=75",
+                    "Tesla and SpaceX chief Elon Musk on Tuesday posted about a new drug called Regretamine, baffling some users and triggering a wave of memes and references to his power as a market tipster.\r\nNew drug c… [+2380 chars]",
+                    "Namita Singh",
+                    "Independent",
+                    "2021-03-03T12:24:07Z",
+                    "https://www.independent.co.uk/news/world/americas/elon-musk-regretamine-twitter-b1811623.html"
+                )
+            )
+
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        val adapter = NewsListAdapter(this) {
             val navigateToDetailsIntent = Intent(this, NewsDetailsActivity::class.java)
-            navigateToDetailsIntent.putExtra(NEWS_KEY, news)
+            navigateToDetailsIntent.putExtra(NewsDetailsActivity.NEWS_KEY, it)
             startActivity(navigateToDetailsIntent)
         }
+
+        adapter.setNews(newsList)
+
+        binding.newsList.layoutManager = layoutManager
+        binding.newsList.adapter = adapter
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(NEWS_KEY, news)
+        outState.putParcelableArrayList(NEWS_KEY, newsList)
     }
 }
