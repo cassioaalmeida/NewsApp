@@ -7,4 +7,5 @@
     <string name="no_name">Internal Server Error</string>
     <string name="browser_needed">Need a browser to open this news</string>
     <string name="share">Share</string>
+    <string name="news_image_description">News image description</string>
 </resources>
