@@ -65,27 +65,20 @@
             android:text="@string/share"
             android:textSize="12sp" />
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/txtAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="By Bram de Haas" />
+
+        <TextView
+            android:id="@+id/txtDate"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="15dp">
-
-            <TextView
-                android:id="@+id/txtAuthor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:text="By Bram de Haas" />
-
-            <TextView
-                android:id="@+id/txtDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtAuthor"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:text="Last Updated: 2021-03-12 11:38:12" />
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Last Updated: 2021-03-12 11:38:12" />
     </LinearLayout>
 </ScrollView>

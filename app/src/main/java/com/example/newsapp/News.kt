@@ -20,7 +20,7 @@ data class News(
 ) : Parcelable {
     @Parcelize
     data class Source(
-            val id: String,
+            val id: String?,
             val name: String
     ) : Parcelable
 }

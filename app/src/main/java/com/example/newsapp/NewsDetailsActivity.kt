@@ -31,7 +31,7 @@ class NewsDetailsActivity : AppCompatActivity() {
             binding.txtTitle.text = news.title
             binding.txtSubTitle.text = news.description
             binding.txtContent.text = news.content
-            binding.txtAuthor.text = String.format(getString(R.string.news_source), news.author, news.source)
+            binding.txtAuthor.text = String.format(getString(R.string.news_source), news.author, news.source.name)
             binding.txtDate.text = String.format(getString(R.string.news_last_update), news.lastUpdate)
 
             val imgView = findViewById<ImageView>(R.id.image)
@@ -52,9 +52,13 @@ class NewsDetailsActivity : AppCompatActivity() {
             }
             binding.btnShare.setOnClickListener {
                 val webpage: Uri = Uri.parse(news.newsUrl)
-                val shareIntent = Intent(Intent.ACTION_SEND, webpage)
-
-                startActivity(Intent.createChooser(shareIntent, webpage.toString()));
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, webpage)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
             }
 
         } else {
