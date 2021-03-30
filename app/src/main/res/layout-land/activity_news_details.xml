@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".MainActivity">
+    tools:context=".NewsDetailsActivity">
 
     <ImageView
         android:id="@+id/image"
@@ -53,15 +53,31 @@
                 android:textSize="17sp"
                 tools:text="Yesterday there was a lot of price action in Goldman Sachs Acquisition Company II (NYSE:GSAH). This is a SPAC with a sponsor controlled by an affiliate of Goldman Sachs (NYSE:GS) through its Permanen…" />
 
-            <Button
-                android:id="@+id/btnViewMore"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:autoLink="web"
-                android:onClick="OpenUrl"
-                android:textSize="12sp"
-                tools:text="@string/view_more" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/btnViewMore"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:autoLink="web"
+                    android:textSize="12sp"
+                    tools:text="@string/view_more" />
+
+                <Button
+                    android:id="@+id/btnShare"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:autoLink="web"
+                    android:text="@string/share"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
