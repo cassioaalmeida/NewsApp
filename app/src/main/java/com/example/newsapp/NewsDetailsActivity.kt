@@ -29,8 +29,8 @@ class NewsDetailsActivity : AppCompatActivity() {
 
             news = intent.getParcelableExtra<News>(NEWS_KEY)!!
             binding.txtTitle.text = news.title
-            binding.txtSubTitle.text = news.description
-            binding.txtContent.text = news.content
+            binding.txtSubTitle.text = news.description ?: ""
+            binding.txtContent.text = news.content ?: ""
             binding.txtAuthor.text = String.format(getString(R.string.news_source), news.author, news.source.name)
             binding.txtDate.text = String.format(getString(R.string.news_last_update), news.lastUpdate)
 
