@@ -25,47 +25,43 @@ class NewsDetailsActivity : AppCompatActivity() {
 
         binding = ActivityNewsDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this).get(NewsDetailViewModel::class.java)
 
-        if (viewModel.news == null && intent.getParcelableExtra<News>(NEWS_KEY) != null) {
-            viewModel.news = intent.getParcelableExtra(NEWS_KEY)!!
+        val viewModelFactory = NewsDetailViewModelFactory(intent.getParcelableExtra<News>(NEWS_KEY)!!)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(NewsDetailViewModel::class.java)
+
+
+        binding.txtTitle.text = viewModel.news.title
+        binding.txtSubTitle.text = viewModel.news.description ?: ""
+        binding.txtContent.text = viewModel.news.content ?: ""
+        binding.txtAuthor.text = String.format(getString(R.string.news_source), viewModel.news.author, viewModel.news.source.name)
+        binding.txtDate.text = String.format(getString(R.string.news_last_update), viewModel.news.lastUpdate)
+
+        val imgView = findViewById<ImageView>(R.id.image)
+        Glide
+                .with(this)
+                .load(viewModel.news.imageURL)
+                .placeholder(R.drawable.ic_no_image)
+                .into(imgView);
+
+        binding.btnViewMore.setOnClickListener {
+            val webpage: Uri = Uri.parse(viewModel.news.newsUrl)
+            val seeEntireNewsIntent = Intent(Intent.ACTION_VIEW, webpage)
+            if (seeEntireNewsIntent.resolveActivity(packageManager) != null) {
+                startActivity(seeEntireNewsIntent)
+            } else {
+                Toast.makeText(this, getString(R.string.browser_needed), Toast.LENGTH_SHORT).show()
+            }
         }
-
-        viewModel.news?.let { news ->
-            binding.txtTitle.text = news.title
-            binding.txtSubTitle.text = news.description ?: ""
-            binding.txtContent.text = news.content ?: ""
-            binding.txtAuthor.text = String.format(getString(R.string.news_source), news.author, news.source.name)
-            binding.txtDate.text = String.format(getString(R.string.news_last_update), news.lastUpdate)
-
-            val imgView = findViewById<ImageView>(R.id.image)
-            Glide
-                    .with(this)
-                    .load(news.imageURL)
-                    .placeholder(R.drawable.ic_no_image)
-                    .into(imgView);
-
-            binding.btnViewMore.setOnClickListener {
-                val webpage: Uri = Uri.parse(news.newsUrl)
-                val seeEntireNewsIntent = Intent(Intent.ACTION_VIEW, webpage)
-                if (seeEntireNewsIntent.resolveActivity(packageManager) != null) {
-                    startActivity(seeEntireNewsIntent)
-                } else {
-                    Toast.makeText(this, getString(R.string.browser_needed), Toast.LENGTH_SHORT).show()
-                }
+        binding.btnShare.setOnClickListener {
+            val webpage: Uri = Uri.parse(viewModel.news.newsUrl)
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, webpage)
+                type = "text/plain"
             }
-            binding.btnShare.setOnClickListener {
-                val webpage: Uri = Uri.parse(news.newsUrl)
-                val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, webpage)
-                    type = "text/plain"
-                }
-                val shareIntent = Intent.createChooser(sendIntent, null)
-                startActivity(shareIntent)
-            }
-
-        } ?: throw NullPointerException("News can't be null")
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
 
     }
 
