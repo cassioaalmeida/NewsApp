@@ -29,7 +29,11 @@ class NewsDetailsActivity : AppCompatActivity() {
         val viewModelFactory = NewsDetailViewModelFactory(intent.getParcelableExtra<News>(NEWS_KEY)!!)
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsDetailViewModel::class.java)
 
+        showNews()
 
+    }
+
+    private fun showNews() {
         binding.txtTitle.text = viewModel.news.title
         binding.txtSubTitle.text = viewModel.news.description ?: ""
         binding.txtContent.text = viewModel.news.content ?: ""
@@ -62,7 +66,6 @@ class NewsDetailsActivity : AppCompatActivity() {
             val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
         }
-
     }
 
 }
