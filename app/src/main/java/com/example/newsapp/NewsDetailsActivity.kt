@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.newsapp.databinding.ActivityNewsDetailsBinding
 
@@ -17,17 +18,20 @@ class NewsDetailsActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityNewsDetailsBinding
-    private lateinit var news: News
+    private lateinit var viewModel: NewsDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityNewsDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel = ViewModelProvider(this).get(NewsDetailViewModel::class.java)
 
-        if (intent.getParcelableExtra<News>(NEWS_KEY) != null) {
+        if (viewModel.news == null && intent.getParcelableExtra<News>(NEWS_KEY) != null) {
+            viewModel.news = intent.getParcelableExtra(NEWS_KEY)!!
+        }
 
-            news = intent.getParcelableExtra<News>(NEWS_KEY)!!
+        viewModel.news?.let { news ->
             binding.txtTitle.text = news.title
             binding.txtSubTitle.text = news.description ?: ""
             binding.txtContent.text = news.content ?: ""
@@ -61,9 +65,7 @@ class NewsDetailsActivity : AppCompatActivity() {
                 startActivity(shareIntent)
             }
 
-        } else {
-            Toast.makeText(this, getString(R.string.no_name), Toast.LENGTH_SHORT).show()
-        }
+        } ?: throw NullPointerException("News can't be null")
 
     }
 
