@@ -7,16 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.databinding.ActivityNewsListBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class NewsListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewsListBinding
     private lateinit var adapter: NewsListAdapter
     private lateinit var viewModel: NewsListViewModel
-    private val service = RetrofitInitializer.createNewsService()
+//    private val service = RetrofitInitializer.createNewsService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,49 +33,39 @@ class NewsListActivity : AppCompatActivity() {
         binding.newsList.adapter = adapter
 
         binding.btnRefresh.setOnClickListener {
-            getDataFromService()
+            viewModel.getDataFromService()
         }
 
-
-        if (viewModel.newsList == null) {
-            getDataFromService()
-        } else {
-            showList()
+        viewModel.newsList.observe(this) { updatedNewsList ->
+            showList(updatedNewsList)
+        }
+        viewModel.screenState.observe(this) { screenState ->
+            updateState(screenState)
         }
 
     }
 
-    fun getDataFromService() {
-        binding.newsList.visibility = View.GONE
-        binding.emptyStateIndicator.visibility = View.GONE
-        binding.progressIndicator.visibility = View.VISIBLE
-
-        service.getTopHeadlines("us").enqueue(object : Callback<NewsList> {
-            override fun onResponse(call: Call<NewsList>, response: Response<NewsList>) {
-                if (response.isSuccessful && response.body() != null && response.body()!!.items.isNotEmpty()) {
-                    viewModel.newsList = response.body()!!.items as ArrayList<News>
-                    showList()
-                } else {
-                    showEmptyState()
-                }
+    private fun updateState(screenState: ScreenState) {
+        when (screenState) {
+            ScreenState.SUCCESS -> {
+                binding.progressIndicator.visibility = View.GONE
+                binding.emptyStateIndicator.visibility = View.GONE
+                binding.newsList.visibility = View.VISIBLE
             }
-
-            override fun onFailure(call: Call<NewsList>, t: Throwable) {
-                showEmptyState()
+            ScreenState.LOADING -> {
+                binding.newsList.visibility = View.GONE
+                binding.emptyStateIndicator.visibility = View.GONE
+                binding.progressIndicator.visibility = View.VISIBLE
             }
-        })
+            ScreenState.ERROR -> {
+                binding.progressIndicator.visibility = View.GONE
+                binding.newsList.visibility = View.GONE
+                binding.emptyStateIndicator.visibility = View.VISIBLE
+            }
+        }
     }
 
-    fun showList() {
-        viewModel.newsList?.let { adapter.setNews(it) }
-        binding.progressIndicator.visibility = View.GONE
-        binding.emptyStateIndicator.visibility = View.GONE
-        binding.newsList.visibility = View.VISIBLE
-    }
-
-    fun showEmptyState() {
-        binding.progressIndicator.visibility = View.GONE
-        binding.newsList.visibility = View.GONE
-        binding.emptyStateIndicator.visibility = View.VISIBLE
+    private fun showList(newsList: List<News>) {
+        adapter.setNews(newsList)
     }
 }
