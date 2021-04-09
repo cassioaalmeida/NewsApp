@@ -24,9 +24,7 @@ class NewsListActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         adapter = NewsListAdapter(this) {
-            val navigateToDetailsIntent = Intent(this, NewsDetailsActivity::class.java)
-            navigateToDetailsIntent.putExtra(NewsDetailsActivity.NEWS_KEY, it)
-            startActivity(navigateToDetailsIntent)
+            viewModel.onNewsItemClicked(it)
         }
 
         binding.newsList.layoutManager = layoutManager
@@ -41,6 +39,12 @@ class NewsListActivity : AppCompatActivity() {
         }
         viewModel.screenState.observe(this) { screenState ->
             updateState(screenState)
+        }
+
+        viewModel.navigationDetail.observe(this) { news ->
+            val navigateToDetailsIntent = Intent(this, NewsDetailsActivity::class.java)
+            navigateToDetailsIntent.putExtra(NewsDetailsActivity.NEWS_KEY, news)
+            startActivity(navigateToDetailsIntent)
         }
 
     }

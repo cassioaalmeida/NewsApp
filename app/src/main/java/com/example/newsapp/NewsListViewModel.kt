@@ -17,6 +17,10 @@ class NewsListViewModel : ViewModel() {
     val screenState: LiveData<ScreenState>
         get() = _screenState
 
+    private val _navigationDetail: MutableLiveData<News> = MutableLiveData()
+    val navigationDetail: LiveData<News>
+        get() = _navigationDetail
+
     private val service = RetrofitInitializer.createNewsService()
 
     init {
@@ -40,6 +44,10 @@ class NewsListViewModel : ViewModel() {
                 _screenState.value = ScreenState.ERROR
             }
         })
+    }
+
+    fun onNewsItemClicked(news: News) {
+        _navigationDetail.value = news
     }
 }
 
