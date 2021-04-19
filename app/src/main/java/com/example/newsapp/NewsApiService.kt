@@ -11,6 +11,7 @@ interface NewsApiService {
 
     @GET("top-headlines?apiKey=$API_KEY")
     fun getTopHeadlines(@Query("country") country: String): Call<NewsList>
-    
 
+    @GET("everything?$API_KEY")
+    fun getEverything(@Query("q") query: String): Call<NewsList>
 }

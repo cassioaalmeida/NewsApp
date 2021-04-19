@@ -31,6 +31,9 @@ class NewsListActivity : AppCompatActivity() {
 
         binding.newsList.layoutManager = layoutManager
         binding.newsList.adapter = adapter
+        binding.fabSearchNews.setOnClickListener {
+            viewModel.onSearchNewsClicked()
+        }
 
         binding.btnRefresh.setOnClickListener {
             viewModel.getDataFromService()
@@ -47,6 +50,13 @@ class NewsListActivity : AppCompatActivity() {
                 notHandled = false
             }
 
+        }
+
+        viewModel.navigationSearchNews.observe(this) { event ->
+            event.handledEvent {
+                val navigateToSearchNews = Intent(this, SearchNewsActivity::class.java)
+                startActivity(navigateToSearchNews)
+            }
         }
 
     }

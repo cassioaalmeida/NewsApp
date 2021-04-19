@@ -10,4 +10,6 @@
     <string name="news_image_description">News image description</string>
     <string name="get_data_error">An error has occurred on fetching data</string>
     <string name="refresh">Refresh</string>
+    <string name="type_your_search">Type your search...</string>
+    <string name="click_to_search_news">Click to search news</string>
 </resources>
