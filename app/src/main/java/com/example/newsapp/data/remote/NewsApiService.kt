@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface NewsApiService {
+interface NewsRDS {
     companion object {
         private const val API_KEY = "2bdd0fa2d9154a938b396932747faf09"
     }

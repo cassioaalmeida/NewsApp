@@ -19,7 +19,7 @@ import kotlin.concurrent.schedule
 
 class SearchNewsViewModel : ViewModel() {
 
-    private val service = RetrofitInitializer.createNewsService()
+    private val service = RetrofitInitializer.getNewsApiService()
 
     private var timer = Timer()
 

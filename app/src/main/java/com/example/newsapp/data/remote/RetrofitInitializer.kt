@@ -10,6 +10,6 @@ class RetrofitInitializer {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        fun createNewsService() = retrofit.create(NewsApiService::class.java)
+        fun getNewsApiService() = retrofit.create(NewsRDS::class.java)
     }
 }
