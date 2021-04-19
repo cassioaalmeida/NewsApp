@@ -1,11 +1,16 @@
-package com.example.newsappt1
+package com.example.newsapp.presentation.scene.searchnews
 
 import android.net.Uri
 import android.webkit.URLUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.newsapp.*
+import com.example.newsapp.R
+import com.example.newsapp.data.model.News
+import com.example.newsapp.data.model.NewsList
+import com.example.newsapp.data.remote.RetrofitInitializer
+import com.example.newsapp.presentation.common.Event
+import com.example.newsapp.presentation.common.ScreenState
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

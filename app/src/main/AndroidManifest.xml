@@ -20,15 +20,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsApp">
-        <activity android:name=".SearchNewsActivity"></activity>
-        <activity android:name=".NewsListActivity">
+        <activity android:name=".presentation.scene.searchnews.SearchNewsActivity"></activity>
+        <activity android:name=".presentation.scene.newslist.NewsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewsDetailsActivity" />
+        <activity android:name=".presentation.scene.newsdetail.NewsDetailsActivity" />
     </application>
 
 </manifest>

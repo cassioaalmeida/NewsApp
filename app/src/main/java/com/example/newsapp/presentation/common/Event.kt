@@ -1,4 +1,4 @@
-package com.example.newsapp
+package com.example.newsapp.presentation.common
 
 class Event<T>(private val content: T) {
     private var hasBeenHandled: Boolean = false

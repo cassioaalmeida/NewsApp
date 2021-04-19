@@ -1,4 +1,4 @@
-package com.example.newsapp
+package com.example.newsapp.presentation.scene.searchnews
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.databinding.ActivitySearchNewsBinding
-import com.example.newsappt1.SearchNewsViewModel
+import com.example.newsapp.presentation.common.NewsListAdapter
+import com.example.newsapp.presentation.common.ScreenState
 
 class SearchNewsActivity : AppCompatActivity() {
 

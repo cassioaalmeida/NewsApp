@@ -1,8 +1,10 @@
-package com.example.newsapp
+package com.example.newsapp.presentation.scene.newsdetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.newsapp.data.model.News
+import com.example.newsapp.presentation.common.Event
 
 class NewsDetailViewModel(news: News) : ViewModel() {
 

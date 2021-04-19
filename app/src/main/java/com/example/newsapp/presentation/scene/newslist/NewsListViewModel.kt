@@ -1,8 +1,13 @@
-package com.example.newsapp
+package com.example.newsapp.presentation.scene.newslist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.newsapp.data.model.News
+import com.example.newsapp.data.model.NewsList
+import com.example.newsapp.data.remote.RetrofitInitializer
+import com.example.newsapp.presentation.common.Event
+import com.example.newsapp.presentation.common.ScreenState
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,7 +41,8 @@ class NewsListViewModel : ViewModel() {
         service.getTopHeadlines("us").enqueue(object : Callback<NewsList> {
             override fun onResponse(call: Call<NewsList>, response: Response<NewsList>) {
                 if (response.isSuccessful && response.body() != null && response.body()!!.items.isNotEmpty()) {
-                    _screenState.value = ScreenState.Success(response.body()!!.items as ArrayList<News>)
+                    _screenState.value =
+                        ScreenState.Success(response.body()!!.items as ArrayList<News>)
                 } else {
                     _screenState.value = ScreenState.Error()
                 }

@@ -1,4 +1,4 @@
-package com.example.newsapp
+package com.example.newsapp.presentation.scene.newsdetail
 
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.newsapp.R
+import com.example.newsapp.data.model.News
 import com.example.newsapp.databinding.ActivityNewsDetailsBinding
 
 
@@ -27,7 +29,7 @@ class NewsDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModelFactory =
-                NewsDetailViewModelFactory(intent.getParcelableExtra<News>(NEWS_KEY)!!)
+            NewsDetailViewModelFactory(intent.getParcelableExtra<News>(NEWS_KEY)!!)
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsDetailViewModel::class.java)
 
         viewModel.newsDetail.observe(this) { updatedNews ->
@@ -40,7 +42,8 @@ class NewsDetailsActivity : AppCompatActivity() {
                 if (seeEntireNewsIntent.resolveActivity(packageManager) != null) {
                     startActivity(seeEntireNewsIntent)
                 } else {
-                    Toast.makeText(this, getString(R.string.browser_needed), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.browser_needed), Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -64,15 +67,15 @@ class NewsDetailsActivity : AppCompatActivity() {
         binding.txtSubTitle.text = news.description ?: ""
         binding.txtContent.text = news.content ?: ""
         binding.txtAuthor.text =
-                String.format(getString(R.string.news_source), news.author, news.source.name)
+            String.format(getString(R.string.news_source), news.author, news.source.name)
         binding.txtDate.text = String.format(getString(R.string.news_last_update), news.lastUpdate)
 
         val imgView = findViewById<ImageView>(R.id.image)
         Glide
-                .with(this)
-                .load(news.imageURL)
-                .placeholder(R.drawable.ic_no_image)
-                .into(imgView);
+            .with(this)
+            .load(news.imageURL)
+            .placeholder(R.drawable.ic_no_image)
+            .into(imgView);
 
         binding.btnViewMore.setOnClickListener {
             viewModel.onNavigationUrlClicked(news.newsUrl)
