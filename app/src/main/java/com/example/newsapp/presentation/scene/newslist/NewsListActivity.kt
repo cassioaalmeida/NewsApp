@@ -29,7 +29,7 @@ class NewsListActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(NewsListViewModel::class.java)
 
         binding.btnRefresh.setOnClickListener {
-            viewModel.getDataFromService()
+            viewModel.onTryAgainClicked()
         }
 
         binding.fabSearchNews.setOnClickListener {
