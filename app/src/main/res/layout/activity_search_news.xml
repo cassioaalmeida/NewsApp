@@ -6,12 +6,36 @@
     android:orientation="vertical"
     tools:context=".SearchNewsActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchNewsList"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:listitem="@layout/news_item" />
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchNewsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/news_item" />
+
+        <ProgressBar
+            android:id="@+id/progressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/emptyStateIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="16dp"
+            android:text="@string/no_results_founded"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/edtSearch"
