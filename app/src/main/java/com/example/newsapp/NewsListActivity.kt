@@ -13,7 +13,9 @@ class NewsListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsListBinding
     private lateinit var adapter: NewsListAdapter
     private lateinit var viewModel: NewsListViewModel
-//    private val service = RetrofitInitializer.createNewsService()
+
+    //    private val service = RetrofitInitializer.createNewsService()
+    var notHandled: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,35 +35,36 @@ class NewsListActivity : AppCompatActivity() {
         binding.btnRefresh.setOnClickListener {
             viewModel.getDataFromService()
         }
-
-        viewModel.newsList.observe(this) { updatedNewsList ->
-            showList(updatedNewsList)
-        }
         viewModel.screenState.observe(this) { screenState ->
             updateState(screenState)
         }
 
-        viewModel.navigationDetail.observe(this) { news ->
-            val navigateToDetailsIntent = Intent(this, NewsDetailsActivity::class.java)
-            navigateToDetailsIntent.putExtra(NewsDetailsActivity.NEWS_KEY, news)
-            startActivity(navigateToDetailsIntent)
+        viewModel.navigationDetail.observe(this) { newsEvent ->
+            newsEvent.handledEvent { news ->
+                val navigateToDetailsIntent = Intent(this, NewsDetailsActivity::class.java)
+                navigateToDetailsIntent.putExtra(NewsDetailsActivity.NEWS_KEY, news)
+                startActivity(navigateToDetailsIntent)
+                notHandled = false
+            }
+
         }
 
     }
 
-    private fun updateState(screenState: ScreenState) {
+    private fun updateState(screenState: ScreenState<List<News>>) {
         when (screenState) {
-            ScreenState.SUCCESS -> {
+            is ScreenState.Success<List<News>> -> {
+                adapter.setNews(screenState.Data)
                 binding.progressIndicator.visibility = View.GONE
                 binding.emptyStateIndicator.visibility = View.GONE
                 binding.newsList.visibility = View.VISIBLE
             }
-            ScreenState.LOADING -> {
+            is ScreenState.Loading -> {
                 binding.newsList.visibility = View.GONE
                 binding.emptyStateIndicator.visibility = View.GONE
                 binding.progressIndicator.visibility = View.VISIBLE
             }
-            ScreenState.ERROR -> {
+            is ScreenState.Error -> {
                 binding.progressIndicator.visibility = View.GONE
                 binding.newsList.visibility = View.GONE
                 binding.emptyStateIndicator.visibility = View.VISIBLE

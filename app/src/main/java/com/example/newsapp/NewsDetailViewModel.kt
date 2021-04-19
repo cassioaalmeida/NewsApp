@@ -10,12 +10,12 @@ class NewsDetailViewModel(news: News) : ViewModel() {
     val newsDetail: LiveData<News>
         get() = _newsDetail
 
-    private val _navigationUrl: MutableLiveData<String> = MutableLiveData()
-    val navigationUrl: LiveData<String>
+    private val _navigationUrl: MutableLiveData<Event<String>> = MutableLiveData()
+    val navigationUrl: LiveData<Event<String>>
         get() = _navigationUrl
 
-    private val _share: MutableLiveData<String> = MutableLiveData()
-    val share: LiveData<String>
+    private val _share: MutableLiveData<Event<String>> = MutableLiveData()
+    val share: LiveData<Event<String>>
         get() = _share
 
     init {
@@ -23,11 +23,11 @@ class NewsDetailViewModel(news: News) : ViewModel() {
     }
 
     fun onNavigationUrlClicked(url: String) {
-        _navigationUrl.value = url
+        _navigationUrl.value = Event(url)
     }
 
     fun onShareClicked(url: String) {
-        _share.value = url
+        _share.value = Event(url)
     }
 
 }

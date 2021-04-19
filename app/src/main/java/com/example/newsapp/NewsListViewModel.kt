@@ -8,17 +8,12 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class NewsListViewModel : ViewModel() {
-
-    private val _newsList: MutableLiveData<List<News>> = MutableLiveData()
-    val newsList: LiveData<List<News>>
-        get() = _newsList
-
-    private val _screenState: MutableLiveData<ScreenState> = MutableLiveData()
-    val screenState: LiveData<ScreenState>
+    private val _screenState: MutableLiveData<ScreenState<List<News>>> = MutableLiveData()
+    val screenState: LiveData<ScreenState<List<News>>>
         get() = _screenState
 
-    private val _navigationDetail: MutableLiveData<News> = MutableLiveData()
-    val navigationDetail: LiveData<News>
+    private val _navigationDetail: MutableLiveData<Event<News>> = MutableLiveData()
+    val navigationDetail: LiveData<Event<News>>
         get() = _navigationDetail
 
     private val service = RetrofitInitializer.createNewsService()
@@ -28,26 +23,25 @@ class NewsListViewModel : ViewModel() {
     }
 
     fun getDataFromService() {
-        _screenState.value = ScreenState.LOADING
+        _screenState.value = ScreenState.Loading()
 
         service.getTopHeadlines("us").enqueue(object : Callback<NewsList> {
             override fun onResponse(call: Call<NewsList>, response: Response<NewsList>) {
                 if (response.isSuccessful && response.body() != null && response.body()!!.items.isNotEmpty()) {
-                    _newsList.value = response.body()!!.items as ArrayList<News>
-                    _screenState.value = ScreenState.SUCCESS
+                    _screenState.value = ScreenState.Success(response.body()!!.items as ArrayList<News>)
                 } else {
-                    _screenState.value = ScreenState.ERROR
+                    _screenState.value = ScreenState.Error()
                 }
             }
 
             override fun onFailure(call: Call<NewsList>, t: Throwable) {
-                _screenState.value = ScreenState.ERROR
+                _screenState.value = ScreenState.Error()
             }
         })
     }
 
     fun onNewsItemClicked(news: News) {
-        _navigationDetail.value = news
+        _navigationDetail.value = Event(news)
     }
 }
 

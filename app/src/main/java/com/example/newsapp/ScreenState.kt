@@ -1,5 +1,7 @@
 package com.example.newsapp
 
-enum class ScreenState {
-    SUCCESS, ERROR, LOADING
+sealed class ScreenState<out T> {
+    class Success<out T>(val Data: T) : ScreenState<T>()
+    class Error : ScreenState<Nothing>()
+    class Loading : ScreenState<Nothing>()
 }

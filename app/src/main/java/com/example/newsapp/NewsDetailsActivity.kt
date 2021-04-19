@@ -27,31 +27,34 @@ class NewsDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModelFactory =
-            NewsDetailViewModelFactory(intent.getParcelableExtra<News>(NEWS_KEY)!!)
+                NewsDetailViewModelFactory(intent.getParcelableExtra<News>(NEWS_KEY)!!)
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsDetailViewModel::class.java)
 
         viewModel.newsDetail.observe(this) { updatedNews ->
             showNews(updatedNews)
         }
-        viewModel.navigationUrl.observe(this) { newsUrl ->
-            val webpage: Uri = Uri.parse(newsUrl)
-            val seeEntireNewsIntent = Intent(Intent.ACTION_VIEW, webpage)
-            if (seeEntireNewsIntent.resolveActivity(packageManager) != null) {
-                startActivity(seeEntireNewsIntent)
-            } else {
-                Toast.makeText(this, getString(R.string.browser_needed), Toast.LENGTH_SHORT).show()
+        viewModel.navigationUrl.observe(this) { newsUrlEvent ->
+            newsUrlEvent.handledEvent { newsUrl ->
+                val webpage: Uri = Uri.parse(newsUrl)
+                val seeEntireNewsIntent = Intent(Intent.ACTION_VIEW, webpage)
+                if (seeEntireNewsIntent.resolveActivity(packageManager) != null) {
+                    startActivity(seeEntireNewsIntent)
+                } else {
+                    Toast.makeText(this, getString(R.string.browser_needed), Toast.LENGTH_SHORT).show()
+                }
             }
-
         }
-        viewModel.share.observe(this) { newsUrl ->
-            val webpage: Uri = Uri.parse(newsUrl)
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, webpage)
-                type = "text/plain"
+        viewModel.share.observe(this) { newsUrlEvent ->
+            newsUrlEvent.handledEvent { newsUrl ->
+                val webpage: Uri = Uri.parse(newsUrl)
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, webpage)
+                    type = "text/plain"
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
             }
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
         }
 
     }
@@ -61,15 +64,15 @@ class NewsDetailsActivity : AppCompatActivity() {
         binding.txtSubTitle.text = news.description ?: ""
         binding.txtContent.text = news.content ?: ""
         binding.txtAuthor.text =
-            String.format(getString(R.string.news_source), news.author, news.source.name)
+                String.format(getString(R.string.news_source), news.author, news.source.name)
         binding.txtDate.text = String.format(getString(R.string.news_last_update), news.lastUpdate)
 
         val imgView = findViewById<ImageView>(R.id.image)
         Glide
-            .with(this)
-            .load(news.imageURL)
-            .placeholder(R.drawable.ic_no_image)
-            .into(imgView);
+                .with(this)
+                .load(news.imageURL)
+                .placeholder(R.drawable.ic_no_image)
+                .into(imgView);
 
         binding.btnViewMore.setOnClickListener {
             viewModel.onNavigationUrlClicked(news.newsUrl)
